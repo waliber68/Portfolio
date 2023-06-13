@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 // Your OpenAI API key
-const apiKey = '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';
+const apiKey = 'Insert your OPEN AI API key here';
 
 // Function to send a message to ChatGPT
 async function sendMessage(message) {
