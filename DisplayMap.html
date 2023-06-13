@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>ArcGIS Maps with features</title>
+
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.27/"></script>
+    <script>
+	  // require statements import ESRI modules from the ESRI source needed in the module
+      require([
+	    "esri/config", 
+		"esri/Map", 
+		"esri/views/MapView",
+
+        "esri/widgets/BasemapToggle",
+        "esri/widgets/BasemapGallery"
+
+      ], function(esriConfig, Map, MapView, BasemapToggle, BasemapGallery) {
+		
+		// apiKey is required to run ESRI resources as a developer
+        esriConfig.apiKey = "AAPKe20c56d03a374e51ae13fcb732d990f2yaKQfUkM7AkfHSq0QMVpENjqMqwccIRt-R-LBGzjJFTycdK7W4VNx5g_TOneyLrx";
+
+		// Declare a constant "map" and create a map objecdt with the basemap topographic
+		// Will add features to display map in different areas, but for now displays California coast
+		// above Los Angeles
+        const map = new Map({
+          basemap: "arcgis-topographic" // Basemap layer service
+        });
+		
+		// Create a MapView using the map and center it at the below longitude, latitude at a zoom level of 13
+		// The container to hold the map is the div "viewDiv" in the body of the html
+		
+        const view = new MapView({
+          map: map,
+          center: [-118.805, 34.027], // Longitude, latitude
+          zoom: 13, // Zoom level
+          container: "viewDiv" // Div element
+        });
+		
+		// Declare a constant basemapToggle which is a new BaseMapToggle object
+		// The view to use is defined directly above, the next map to display is the 
+		// arcgis imagery.
+		
+		const basemapToggle = new BasemapToggle({
+        	view: view,
+        	nextBasemap: "arcgis-imagery"
+     	});
+		
+		// This adds the basemapToggle object in the bottom right of the map display
+		
+     	view.ui.add(basemapToggle,"bottom-right");
+
+		// Declare a constant BasemapGallery object (shows a gallery of different map displays)
+		
+      	const basemapGallery = new BasemapGallery({
+       		view: view,
+        	source: {
+          		query: {
+            		title: '"World Basemaps for Developers" AND owner:esri'
+        		}
+        	}
+      	});
+		
+		// Adds the basemapGallery object to the top right of the map display (view)
+		
+      	view.ui.add(basemapGallery, "top-right"); // Add to the view
+		
+		// Stay tuned as new features (drawing shapes, selecting addresses, zoom to different geolocations
+		// are added 	
+		
+      });
+    </script>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>
